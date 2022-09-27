@@ -4,15 +4,18 @@ namespace App\Console;
 
 use App\Proxy\ParserInterface;
 use App\Repository\ProxyRepository;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Style\SymfonyStyle;
 
 class LoadProxyList extends Command
 {
     public function __construct(
         private readonly ProxyRepository $proxyRepository,
         private readonly ParserInterface $parser,
+        private readonly LoggerInterface $logger
     ) {
         parent::__construct();
     }
@@ -27,14 +30,17 @@ class LoadProxyList extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        try {
-            $this->proxyRepository->truncate();
-            $parsedProxies = $this->parser->parse();
-            array_walk($parsedProxies, $this->proxyRepository->save(...));
+        $io = new SymfonyStyle($input, $output);
 
-            $output->writeln(sprintf('Parsed %d proxies', count($parsedProxies)));
+        try {
+            $parsedProxies = $this->parser->parse();
+            $parsedCount = $this->proxyRepository->refillTable($parsedProxies);
+
+            $this->logger->info(sprintf('Parsed %d proxies', $parsedCount));
+            $io->success(sprintf('Parsed %d proxies', $parsedCount));
         } catch (\Throwable $e) {
-            $output->writeln($e->getMessage());
+            $io->error($e->getMessage());
+            $this->logger->error(sprintf('%s%s%s', $e->getMessage(), PHP_EOL, $e->getTraceAsString()));
 
             return Command::FAILURE;
         }

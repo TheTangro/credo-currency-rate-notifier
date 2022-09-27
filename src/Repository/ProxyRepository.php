@@ -58,4 +58,42 @@ class ProxyRepository extends ServiceEntityRepository
 
         $connection->executeStatement($query);
     }
+
+    /**
+     * @param iterable<Proxy> $entityGenerator
+     *
+     * @return int
+     *
+     * @throws \Doctrine\DBAL\Exception
+     */
+    public function refillTable(iterable $entityGenerator): int
+    {
+        $connection = $this->getEntityManager()->getConnection();
+        $connection->beginTransaction();
+
+        try {
+            $counter = 0;
+            $this->createQueryBuilder('e')
+                ->delete()
+                ->getQuery()
+                ->execute();
+
+            foreach ($entityGenerator as $proxy) {
+                $counter++;
+                $this->save($proxy);
+            }
+
+            if ($counter === 0) {
+                throw new \InvalidArgumentException('Zero proxies parsed');
+            }
+
+            $this->getEntityManager()->flush();
+        } catch (\Exception $e) {
+            $connection->rollback();
+        }
+
+        $connection->commit();
+
+        return $counter;
+    }
 }

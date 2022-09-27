@@ -7,7 +7,7 @@ use App\Entity\Proxy;
 interface ParserInterface
 {
     /**
-     * @return Proxy[]
+     * @return \Generator<Proxy>
      */
-    public function parse(): array;
+    public function parse(): \Generator;
 }

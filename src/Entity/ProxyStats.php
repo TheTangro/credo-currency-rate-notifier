@@ -14,14 +14,14 @@ class ProxyStats
     private ?int $id = null;
 
     #[ORM\OneToOne(inversedBy: 'stats', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'cascade')]
     private ?Proxy $proxy = null;
 
-    #[ORM\Column]
-    private ?int $usageCounter = null;
+    #[ORM\Column(nullable: false)]
+    private ?int $usageCounter = 0;
 
-    #[ORM\Column]
-    private ?int $errorsCounter = null;
+    #[ORM\Column(nullable: false)]
+    private ?int $errorsCounter = 0;
 
     public function getId(): ?int
     {
