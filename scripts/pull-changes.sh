@@ -17,11 +17,11 @@ function pull_git() {
 }
 
 function stop_docker {
-  docker-compose -f "$DOCKER_COMPOSE_FILE" stop || return 1
+  docker compose -f "$DOCKER_COMPOSE_FILE" stop || return 1
 }
 
 function start_docker {
-  docker-compose -f "$DOCKER_COMPOSE_FILE" up -d || return 1
+  docker compose -f "$DOCKER_COMPOSE_FILE" up -d || return 1
 }
 
 function prepare_log_dir {
