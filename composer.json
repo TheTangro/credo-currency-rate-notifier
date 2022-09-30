@@ -11,6 +11,7 @@
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.13",
+        "fakerphp/faker": "^1.20",
         "guzzlehttp/guzzle": "^7.5",
         "imangazaliev/didom": "^2.0",
         "symfony/console": "6.1.*",
@@ -20,7 +21,8 @@
         "symfony/monolog-bundle": "^3.8",
         "symfony/proxy-manager-bridge": "6.1.*",
         "symfony/runtime": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/yaml": "6.1.*",
+        "ext-bcmath": "*"
     },
     "config": {
         "allow-plugins": {

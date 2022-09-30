@@ -7,19 +7,13 @@ use App\Entity\ProxyStats;
 use App\Proxy\ParserInterface;
 use Darsyn\IP\Version\Multi;
 use DiDom\Document;
+use Faker\Provider\UserAgent as UserAgentGenerator;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
 
 class ProxyScanIoParser implements ParserInterface
 {
     private ?Client $client = null;
-
-    public const USER_AGENTS = [
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Safari/605.1.15',
-        'Mozilla/5.0 (iPad; CPU OS 16_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
-        'Mozilla/5.0 (iPod touch; CPU iPhone 16_0_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.0 Mobile/15E148 Safari/604.1',
-        'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0 Safari/605.1.15'
-    ];
 
     private array $parsed = [];
 
@@ -66,7 +60,7 @@ class ProxyScanIoParser implements ParserInterface
                         time()
                     ),
                     'headers' => [
-                        'User-Agent' => self::USER_AGENTS[rand(0, count(self::USER_AGENTS) - 1)]
+                        'User-Agent' => UserAgentGenerator::userAgent()
                     ]
                 ]
             );

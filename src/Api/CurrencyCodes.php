@@ -8,4 +8,5 @@ enum CurrencyCodes
     case EUR;
     case GEL;
     case BYN;
+    case RUB;
 }

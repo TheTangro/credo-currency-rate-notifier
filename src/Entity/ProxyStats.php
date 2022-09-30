@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
-use App\Repository\ProxyStatsRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Index;
 
-#[ORM\Entity(repositoryClass: ProxyStatsRepository::class)]
+#[ORM\Entity]
+#[Index(columns: ['usage_counter', 'errors_counter'], name: "proxy_stats_index")]
 class ProxyStats
 {
     #[ORM\Id]

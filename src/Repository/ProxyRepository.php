@@ -42,7 +42,7 @@ class ProxyRepository extends ServiceEntityRepository
     public function getLeastUsed(): ?Proxy
     {
         return $this->createQueryBuilder('p')
-            ->innerJoin('p.proxyStats', 'ps')
+            ->innerJoin('p.stats', 'ps')
             ->orderBy('ps.usageCounter', 'asc')
             ->setMaxResults(1)
             ->getQuery()
