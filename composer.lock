@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5f282277c80d8add0bad5dbcfffabd21",
+    "content-hash": "7f30863500ae97cd4d8b9e5436ec8d4e",
     "packages": [
         {
             "name": "darsyn/ip",
@@ -5257,6 +5257,7 @@
     "prefer-lowest": false,
     "platform": {
         "php": ">=8.1",
+        "ext-bcmath": "*",
         "ext-ctype": "*",
         "ext-iconv": "*"
     },

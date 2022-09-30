@@ -6,6 +6,9 @@
 parameters:
     notifier.guzzle.timeout: 15
     notifier.guzzle.exchange_rates.tries_amount: 40
+    notifier.proxy.renew_proxies_gap: 6000
+    notifier.exchange_rates.load_rates_gap: 30
+    runtime.lock_dir: '%kernel.project_dir%/var/lock'
 services:
     # default configuration for services in *this* file
     _defaults:
