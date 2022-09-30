@@ -51,7 +51,7 @@ class GuzzleAdapter implements AdapterInterface
                     ]
                 );
             } catch (\Throwable $e) {
-                $proxyStats->setUsageCounter($proxyStats->getErrorsCounter() + 1);
+                $proxyStats->setErrorsCounter($proxyStats->getErrorsCounter() + 1);
                 $this->logger->emergency($e->getMessage());
             }
 

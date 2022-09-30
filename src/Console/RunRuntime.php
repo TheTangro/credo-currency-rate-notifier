@@ -2,7 +2,6 @@
 
 namespace App\Console;
 
-use App\ExchangeRates\Providers\CredoMainPageProvider;
 use App\Utils\Stopwatch;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Command\Command;
