@@ -70,7 +70,8 @@ function parse_file_path {
       PATH="$1"
     elif [[ $1 =~ ^~/.*$ ]]
     then
-      PATH="$HOME/$(echo $1 | grep -oP '(?<=~\/).*')"
+      local SUBDIR="$(echo $1 | grep -oP '(?<=~\/).*')"
+      PATH="$HOME/$SUBDIR"
     else
       PATH="$PROJECT_DIR/$1"
     fi
