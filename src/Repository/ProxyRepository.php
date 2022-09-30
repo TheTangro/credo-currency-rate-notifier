@@ -44,6 +44,7 @@ class ProxyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->innerJoin('p.stats', 'ps')
             ->orderBy('ps.usageCounter', 'asc')
+            ->orderBy('ps.errorsCounter', 'asc')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
