@@ -3,7 +3,7 @@
 FLAG_NAME="pull"
 CURRENT_DIR="$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd)"
 PROJECT_DIR="$(realpath $CURRENT_DIR/../)"
-FLAGS_DIR="$CURRENT_DIR/../flags"
+FLAGS_DIR="$CURRENT_DIR/../var/flags"
 FLAG_FILE="$(realpath $FLAGS_DIR/$FLAG_NAME)"
 HELP="0"
 DOCKER_COMPOSE_FILE="~/notifier_docker/docker-compose.yml"
