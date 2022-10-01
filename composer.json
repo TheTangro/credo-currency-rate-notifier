@@ -22,7 +22,8 @@
         "symfony/monolog-bundle": "^3.8",
         "symfony/proxy-manager-bridge": "6.1.*",
         "symfony/runtime": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/yaml": "6.1.*",
+        "thetangro/monolog-postgres": "dev-master"
     },
     "config": {
         "allow-plugins": {
@@ -46,6 +47,12 @@
             "App\\Tests\\": "tests/"
         }
     },
+    "repositories": [
+        {
+            "url": "https://github.com/TheTangro/monolog-postgres.git",
+            "type": "git"
+        }
+    ],
     "replace": {
         "symfony/polyfill-ctype": "*",
         "symfony/polyfill-iconv": "*",

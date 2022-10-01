@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "7f30863500ae97cd4d8b9e5436ec8d4e",
+    "content-hash": "675379e704de646227810c5415387387",
     "packages": [
         {
             "name": "darsyn/ip",
@@ -5097,6 +5097,44 @@
                 }
             ],
             "time": "2022-08-02T16:17:38+00:00"
+        },
+        {
+            "name": "thetangro/monolog-postgres",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/TheTangro/monolog-postgres.git",
+                "reference": "413e5c35a29806f190544d2779a350d1ca62f174"
+            },
+            "require": {
+                "monolog/monolog": ">1.4.0"
+            },
+            "default-branch": true,
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "PGHandler\\": "src/PGHandler"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Reginaldo Bertoluci Curtio",
+                    "email": "reginaldobertoluci@gmail.com"
+                }
+            ],
+            "description": "A handler for Monolog that sends messages to Postgres",
+            "homepage": "https://github.com/reginaldobertoluci/monolog-postgres",
+            "keywords": [
+                "database",
+                "log",
+                "logging",
+                "monolog",
+                "postgresql"
+            ],
+            "time": "2022-10-01T17:08:52+00:00"
         }
     ],
     "packages-dev": [
@@ -5252,7 +5290,9 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "thetangro/monolog-postgres": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

@@ -6,7 +6,7 @@
 parameters:
     notifier.guzzle.timeout: 15
     notifier.guzzle.exchange_rates.tries_amount: 40
-    notifier.proxy.renew_proxies_gap: 6000
+    notifier.proxy.renew_proxies_gap: 86400
     notifier.exchange_rates.load_rates_gap: 30
     notifier.proxy.load.amount: 36
     runtime.lock_dir: '%kernel.project_dir%/var/lock'
@@ -29,3 +29,6 @@ services:
     # please note that last definitions always *replace* previous ones
     App\ExchangeRates\Providers\CredoMainPageAdapters\AdapterInterface:
         class: App\ExchangeRates\Providers\CredoMainPageAdapters\GuzzleAdapter
+    logger:
+        alias: 'monolog.logger'
+        public: true
