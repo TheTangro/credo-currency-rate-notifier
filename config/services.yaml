@@ -6,8 +6,7 @@
 parameters:
     notifier.guzzle.timeout: 15
     notifier.guzzle.exchange_rates.tries_amount: 40
-    notifier.proxy.renew_proxies_gap: 86400
-    notifier.exchange_rates.load_rates_gap: 30
+    notifier.exchange_rates.load_rates_gap: 120
     notifier.proxy.load.amount: 36
     runtime.lock_dir: '%kernel.project_dir%/var/lock'
 services:

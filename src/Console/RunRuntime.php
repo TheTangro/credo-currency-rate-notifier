@@ -34,10 +34,6 @@ class RunRuntime extends Command
         /** @var Stopwatch[] $stopwatches **/
         $stopwatches = [
             Stopwatch::setInterval(
-                $this->runRenewProxy(...),
-                $this->containerBag->get('notifier.proxy.renew_proxies_gap')
-            ),
-            Stopwatch::setInterval(
                 $this->runLoadExchangeRates(...),
                 $this->containerBag->get('notifier.exchange_rates.load_rates_gap')
             )
@@ -50,11 +46,6 @@ class RunRuntime extends Command
 
             sleep(1);
         }
-    }
-
-    private function runRenewProxy(): void
-    {
-        $this->runCommand('proxy-list:load');
     }
 
     private function runLoadExchangeRates(): void

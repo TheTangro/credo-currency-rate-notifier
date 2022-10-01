@@ -28,15 +28,6 @@ class GuzzleAdapter implements AdapterInterface
 
         for ($tryNumber = 0; $tryNumber <= $maxTries; $tryNumber++) {
             $guzzleClient = $this->getGuzzleClient();
-            $proxy = $this->proxyRepository->getLeastUsed();
-            $proxyStats = $proxy->getStats();
-            $proxyStats->setUsageCounter($proxyStats->getUsageCounter() + 1);
-            $proxyLine = sprintf(
-                '%s://%s:%d',
-                mb_strtolower($proxy->getType()),
-                $proxy->getIp()->getDotAddress(),
-                $proxy->getPort()
-            );
 
             try {
                 $result = $guzzleClient->get(
@@ -45,24 +36,16 @@ class GuzzleAdapter implements AdapterInterface
                         'headers' => [
                             'User-Agent' => UserAgentGenerator::userAgent()
                         ],
-                        'proxy' => $proxyLine,
                         'http_errors' => true,
                         'verify' => false
                     ]
                 );
             } catch (\Throwable $e) {
-                $proxyStats->setErrorsCounter($proxyStats->getErrorsCounter() + 1);
                 $this->logger->emergency($e->getMessage());
             }
 
             if (isset($result) && $result->getStatusCode() === 200) {
-                $this->proxyRepository->save($proxy, true);
-
                 return $result->getBody()->getContents();
-            } elseif (isset($result) && $result->getStatusCode() === 403) {
-                $this->proxyRepository->remove($proxy, true);
-            } else {
-                $this->proxyRepository->save($proxy, true);
             }
         }
 
