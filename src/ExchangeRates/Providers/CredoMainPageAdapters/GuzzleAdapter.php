@@ -55,10 +55,14 @@ class GuzzleAdapter implements AdapterInterface
                 $this->logger->emergency($e->getMessage());
             }
 
-            $this->proxyRepository->save($proxy, true);
-
             if (isset($result) && $result->getStatusCode() === 200) {
+                $this->proxyRepository->save($proxy, true);
+
                 return $result->getBody()->getContents();
+            } elseif ($result->getStatusCode() === 403) {
+                $this->proxyRepository->remove($proxy, true);
+            } else {
+                $this->proxyRepository->save($proxy, true);
             }
         }
 

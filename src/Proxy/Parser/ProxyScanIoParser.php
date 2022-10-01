@@ -4,12 +4,15 @@ namespace App\Proxy\Parser;
 
 use App\Entity\Proxy;
 use App\Entity\ProxyStats;
+use App\Exceptions\ProxyParsingException;
 use App\Proxy\ParserInterface;
 use Darsyn\IP\Version\Multi;
 use DiDom\Document;
+use DiDom\Element;
 use Faker\Provider\UserAgent as UserAgentGenerator;
 use GuzzleHttp\Client;
 use GuzzleHttp\RequestOptions;
+use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 
 class ProxyScanIoParser implements ParserInterface
 {
@@ -17,13 +20,36 @@ class ProxyScanIoParser implements ParserInterface
 
     private array $parsed = [];
 
+    public function __construct(
+        private readonly ContainerBagInterface $containerBag
+    ) {
+    }
+
     /**
      * @return \Generator<Proxy>
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function parse(): \Generator
     {
-        foreach ($this->loadProxies() as $proxyData) {
+        $parsedProxies = [];
+
+        foreach ($this->loadProxies() as $loadProxy) {
+            $parsedProxies[] = $loadProxy;
+        }
+
+        usort($parsedProxies, function (array $proxyNodeA, array $proxyNodeB) {
+            $availabilityA = (int) $proxyNodeA['availability'];
+            $availabilityB = (int) $proxyNodeB['availability'];
+
+            return $availabilityB <=> $availabilityA;
+        });
+        $parsedProxies = array_slice(
+            $parsedProxies,
+            0,
+            $this->containerBag->get('notifier.proxy.load.amount')
+        );
+
+        foreach ($parsedProxies as $proxyData) {
             $proxy = new Proxy();
             extract($proxyData);
             $cacheKey = $ip . $port;
@@ -82,6 +108,13 @@ class ProxyScanIoParser implements ParserInterface
             foreach ($proxyNodes as $proxyNode) {
                 $ip = trim($proxyNode->first('th')->text());
                 $additionalData = $proxyNode->find('td');
+                $availabilityNode = $proxyNode->find('.progress-bar[role="progressbar"]');
+
+                if (empty($availabilityNode)) {
+                    throw new ProxyParsingException('Invalid proxy parsing. Unable to parse availability');
+                }
+
+                $availability = $this->extractAvailability(reset($availabilityNode));
 
                 if (empty($ip) || !isset($additionalData[0], $additionalData[1], $additionalData[3])) {
                     continue;
@@ -95,13 +128,22 @@ class ProxyScanIoParser implements ParserInterface
                         'port' => $port,
                         'location' => $location,
                         'type' => $type,
-                        'ip' => $ip
+                        'ip' => $ip,
+                        'availability' => $availability
                     ];
                 }
             }
         }
 
         return $parsedNodes;
+    }
+
+    private function extractAvailability(Element $element): int
+    {
+        $styleNode = (string) $element->getAttribute('style');
+        preg_match('/(?<=width:)\d+(?=%)/m', $styleNode, $matches);
+
+        return !empty($matches) ? (int) reset($matches) : 0;
     }
 
     private function getClient(): Client

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Proxy;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -44,7 +45,7 @@ class ProxyRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('p')
             ->innerJoin('p.stats', 'ps')
             ->orderBy('ps.usageCounter', 'asc')
-            ->orderBy('ps.errorsCounter', 'asc')
+            ->add('orderBy', new OrderBy('ps.errorsCounter', 'asc'), true)
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult();
