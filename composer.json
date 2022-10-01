@@ -22,7 +22,8 @@
         "symfony/monolog-bundle": "^3.8",
         "symfony/proxy-manager-bridge": "6.1.*",
         "symfony/runtime": "6.1.*",
-        "symfony/yaml": "6.1.*"
+        "symfony/yaml": "6.1.*",
+        "thetangro/monolog-postgres": "dev-master"
     },
     "config": {
         "allow-plugins": {
