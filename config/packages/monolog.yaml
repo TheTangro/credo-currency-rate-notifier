@@ -1,2 +1,11 @@
 monolog:
   handlers:
+    file_log:
+      type: stream
+      path: "%kernel.logs_dir%/system.log"
+      level: debug
+
+    syslog_handler:
+      type: syslog
+      path: "%kernel.logs_dir%/exception.log"
+      level: error
