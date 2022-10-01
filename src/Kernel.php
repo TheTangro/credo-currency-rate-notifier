@@ -19,11 +19,13 @@ class Kernel extends BaseKernel
 
     private function registerPgLogger(): void
     {
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $connection = $em->getConnection()->getNativeConnection();
-        $pgHandler = new \PGHandler\PGHandler($connection, 'system_log');
-        $logger = $this->getContainer()->get('logger');
-        /** @var Logger $logger * */
-        $logger->pushHandler($pgHandler);
+        try {
+            $em = $this->getContainer()->get('doctrine')->getManager();
+            $connection = $em->getConnection()->getNativeConnection();
+            $pgHandler = new \PGHandler\PGHandler($connection, 'system_log');
+            $logger = $this->getContainer()->get('logger');
+            /** @var Logger $logger * */
+            $logger->pushHandler($pgHandler);
+        } catch (\Throwable){}
     }
 }
