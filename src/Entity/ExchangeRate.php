@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Doctrine\ORM\Mapping\Index;
 
 #[ORM\Entity(repositoryClass: ExchangeRateRepository::class)]
-#[Index(columns: ['exchange_date', 'exchange_type'], name: "exchange_date_index")]
+#[Index(columns: ['exchange_type', 'currency_code', 'exchange_date'], name: "exchange_date_index")]
 class ExchangeRate
 {
     #[ORM\Id]

@@ -2,8 +2,11 @@
 
 namespace App\Repository;
 
+use App\Api\CurrencyCodes;
+use App\Api\ExchangeRatesTypes;
 use App\Entity\ExchangeRate;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\Query\Expr\OrderBy;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,5 +40,20 @@ class ExchangeRateRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function getLatestRateByCodeAndType(
+        CurrencyCodes $code,
+        ExchangeRatesTypes $type
+    ): ?ExchangeRate {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.currencyCode = :currency_code')
+            ->andWhere('p.exchangeType = :type')
+            ->orderBy('p.exchangeDate', 'desc')
+            ->setMaxResults(1)
+            ->setParameter('currency_code', $code->name)
+            ->setParameter('type', $type->name)
+            ->getQuery()
+            ->getOneOrNullResult();
     }
 }
