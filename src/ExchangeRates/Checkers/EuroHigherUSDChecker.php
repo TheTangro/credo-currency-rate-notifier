@@ -31,14 +31,15 @@ class EuroHigherUSDChecker implements CheckerInterface
         $euroUsdRatio = bcdiv($latestEuroRate->getBuyRate(), $latestUsdRate->getSellRate(), 72);
 
         if (bccomp($euroUsdRatio, '1', 72) >= 1) {
-            $this->logger->info('Found EUR/USD ratio greater than 1');
+            $ratio = number_format($euroUsdRatio, 4, '.');
+            $this->logger->info(sprintf('Found EUR/USD ratio greater than 1 (%s)', (string) $ratio));
             $notification = new Notification(
                 sprintf(
                     'EUR / USD ratio is greater than 1.'. PHP_EOL
                     . 'Ratio = %s' . PHP_EOL
                     . 'Exhange rate of EUR has been loaded at: %s' . PHP_EOL
                     . 'Exhange rate of USD has been loaded at: %s',
-                    number_format($euroUsdRatio, 4, '.'),
+                    $ratio,
                     $latestEuroRate->getExchangeDate()->format('d-m-Y H:i:s'),
                     $latestUsdRate->getExchangeDate()->format('d-m-Y H:i:s')
                 ),
