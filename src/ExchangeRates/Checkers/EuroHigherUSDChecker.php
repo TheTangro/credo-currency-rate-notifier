@@ -29,9 +29,9 @@ class EuroHigherUSDChecker implements CheckerInterface
         );
 
         $euroUsdRatio = bcdiv($latestEuroRate->getBuyRate(), $latestUsdRate->getSellRate(), 72);
-        $ratio = number_format($euroUsdRatio, 4, '.');
+        $ratio = number_format($euroUsdRatio, 3, '.');
 
-        if (bccomp($euroUsdRatio, '1', 72) >= 1) {
+        if (bccomp($euroUsdRatio, '0.99', 72) >= 1) {
             $this->logger->info(sprintf('Found EUR/USD ratio greater than 1 (%s)', (string) $ratio));
             $notification = new Notification(
                 sprintf(
