@@ -29,7 +29,6 @@ services:
         arguments:
             $checkers:
                 - '@App\ExchangeRates\Checkers\EuroHigherUSDChecker'
-                - '@App\ExchangeRates\Checkers\EuroEqualUSDChecker'
     App\Notifications\Notifiers\TelegramNotifier:
         class: \App\Notifications\Notifiers\TelegramNotifier
         autowire: true
